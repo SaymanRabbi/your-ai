@@ -1,9 +1,9 @@
-"use client"
-import { cn } from "@/lib/utils"
-import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react"
-import { Montserrat } from "next/font/google"
-import Image from "next/image"
-import Link from "next/link"
+"use client";
+import { cn } from "@/lib/utils";
+import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
+import { Montserrat } from "next/font/google";
+import Image from "next/image";
+import Link from "next/link";
 
 // -----Custom Font ------
 const montserrat = Montserrat({
