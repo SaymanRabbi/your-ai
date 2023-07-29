@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation"
 import { ChatCompletionRequestMessage } from "openai"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import ReactMarkDown from "react-markdown"
 import * as z from "zod"
 import { formSchema } from "./constants"
 const CodePage = () => {
@@ -118,9 +119,22 @@ const CodePage = () => {
                         > {
                            message.role === "user" ? <UserAvatar/> : <BotAvatar/>
                         }
-                          <p className=" text-sm">
-                          {message.content}
-                          </p>
+                          <ReactMarkDown
+                          components={{
+                            pre:({node,...props})=>(
+                              <div className=" overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
+                                  <pre {...props}/>
+                              </div>
+                            ),
+                            code:({node,...props})=>(
+                              <code {...props} className="bg-black/10 rounded-lg p-1"/>
+                            )
+
+                          }}
+                          className=" text-sm overflow-hidden leading-7"
+                          >
+                          {message.content || ''}
+                          </ReactMarkDown>
                         </div>
                        ))}
                     </div>
