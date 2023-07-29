@@ -4,11 +4,17 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { MessageSquare } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { ChatCompletionRequestMessage } from "openai"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { formSchema } from "./constants"
 const ConversationPage = () => {
+  const router = useRouter()
+  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
           defaultValues: {
@@ -18,14 +24,31 @@ const ConversationPage = () => {
     const isLoading = form.formState.isSubmitting
     // -----onSubmit Data-----
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
-        console.log(data)
+        try {
+          const userMessage :ChatCompletionRequestMessage={
+            role:"user",
+            content:data.prompt
+          }
+          const newMessages = [...messages,userMessage]
+          const response = await axios.post('/api/conversation',{
+            messages:newMessages
+          })
+          setMessages((current)=>[...current,userMessage,response.data])
+           form.reset()
+        } catch (error:any) {
+          // ---todo open pro modal
+          console.log(error)
+        }finally{
+          // form.reset()
+          router.refresh()  
+        }
     }
     // -----onSubmit Data-----
     return (
         <div>
             <Heading
              title="Conversation"
-            description="Our Most Advanced Conversational AI"
+            description="Your Most Advanced Conversational AI"
             icon={MessageSquare}
             iconColor="text-violet-500"
             bgColor="bg-violet-500/10"
@@ -67,7 +90,13 @@ const ConversationPage = () => {
                 </div>
                 {/* ------showing result----- */}
                   <div className=" space-y-4 mt-4">
-                    Messages Content
+                    <div className=" flex flex-col-reverse gap-y-4">
+                       {messages.map((message,index)=>(
+                        <div key={message.content}>
+                           {message.content}
+                        </div>
+                       ))}
+                    </div>
                   </div>
                 {/* ------showing result----- */}
             </div>
