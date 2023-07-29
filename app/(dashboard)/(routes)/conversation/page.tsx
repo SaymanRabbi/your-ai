@@ -65,6 +65,11 @@ const ConversationPage = () => {
                     </Form>
                         {/* --------react hook form */}
                 </div>
+                {/* ------showing result----- */}
+                  <div className=" space-y-4 mt-4">
+                    Messages Content
+                  </div>
+                {/* ------showing result----- */}
             </div>
             {/* -----form----- */}
         </div>
