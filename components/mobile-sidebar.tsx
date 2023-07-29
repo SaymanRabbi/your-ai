@@ -6,11 +6,13 @@ import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 const  MobileSideBar = () => {
+    // ------hydration error-------
     const  [isMounted, setIsMounted] = useState(false)
     useEffect(() => {
         setIsMounted(true)
     },[])
     if (!isMounted) return null
+    // ------hydration error-------
     return (
         <Sheet>
         <SheetTrigger>
