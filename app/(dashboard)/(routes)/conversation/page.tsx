@@ -1,6 +1,8 @@
 "use client"
 import Heading from "@/components/heading"
+import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageSquare } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -42,11 +44,22 @@ const ConversationPage = () => {
                         render={({field})=>(
                             <FormItem className=" col-span-12 lg:col-span-10">
                                 <FormControl className=" m-0 p-0">
-                                     
+                                     <Input
+                                     className=" border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                                      disabled={isLoading}
+                                      placeholder="How do i calculate the radius of a circle?"
+                                      {...field}
+                                     />
                                 </FormControl>
                             </FormItem>
                         )}
                         />
+                        <Button
+                        className=" col-span-12 lg:col-span-2 w-full"
+                        disabled={isLoading}
+                        >
+                            Generate
+                        </Button>
                       </form>
                         {/* --------html form----- */}
                     </Form>
