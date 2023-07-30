@@ -6,7 +6,9 @@ import { useProModal } from "@/hooks/use-pro-modal";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { Check, Code, Image, MessageSquare, Music, VideoIcon, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 const tools =[
@@ -50,13 +52,15 @@ const tools =[
 export const ProModal = () => {
     const proModal = useProModal()
     const [loading , setLoading] = useState(false)
+    const router = useRouter()
     const  onSubscribe = async() => {
       try {
         setLoading(true)
         const response = await axios.get("/api/stripe")
         window.location.href = response.data.url
+        router.refresh()
       } catch (error) {
-        console.log("stripe Clinet error",error)
+          toast.error('Something went wrong')  
       }
       finally{
         setLoading(false)
@@ -101,6 +105,7 @@ export const ProModal = () => {
                 variant='premium'
                 className=" w-full"
                 onClick={onSubscribe}
+                disabled={loading}
                 >
                     Upgrade
                     <Zap className=" w-4 h-4 ml-2 fill-white"/>

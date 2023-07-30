@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 interface MobileSideBarProps{
-    apiLimitCount:number
+    apiLimitCount:number;
+    isPro:boolean;
 }
-const  MobileSideBar = ({apiLimitCount}:MobileSideBarProps) => {
+const  MobileSideBar = ({apiLimitCount=0,isPro=false}:MobileSideBarProps) => {
     // ------hydration error-------
     const  [isMounted, setIsMounted] = useState(false)
     useEffect(() => {
@@ -25,7 +26,7 @@ const  MobileSideBar = ({apiLimitCount}:MobileSideBarProps) => {
         </Button>
         </SheetTrigger>
         <SheetContent side="left" className="p-0">
-            <SideBar apiLimitCount={apiLimitCount}/>
+            <SideBar apiLimitCount={apiLimitCount} isPro={isPro}/>
         </SheetContent>
         </Sheet>
     )
