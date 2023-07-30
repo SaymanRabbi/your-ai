@@ -4,7 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { cn } from "@/lib/utils";
+import axios from "axios";
 import { Check, Code, Image, MessageSquare, Music, VideoIcon, Zap } from "lucide-react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 const tools =[
@@ -47,6 +49,19 @@ const tools =[
 
 export const ProModal = () => {
     const proModal = useProModal()
+    const [loading , setLoading] = useState(false)
+    const  onSubscribe = async() => {
+      try {
+        setLoading(true)
+        const response = await axios.get("/api/stripe")
+        window.location.href = response.data.url
+      } catch (error) {
+        console.log("stripe Clinet error",error)
+      }
+      finally{
+        setLoading(false)
+      }
+    }
     return (
        <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
          <DialogContent>
@@ -85,6 +100,7 @@ export const ProModal = () => {
                 size='lg'
                 variant='premium'
                 className=" w-full"
+                onClick={onSubscribe}
                 >
                     Upgrade
                     <Zap className=" w-4 h-4 ml-2 fill-white"/>

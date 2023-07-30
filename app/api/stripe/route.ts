@@ -49,6 +49,7 @@ export async function GET() {
                 userId,
           }
        })
+         return new NextResponse(JSON.stringify({url:stripeSession.url}),{status:200})
     } catch (error) {
         console.log("stripe",error);
         return new NextResponse("Internal Server Error",{status:500})
