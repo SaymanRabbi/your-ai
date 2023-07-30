@@ -5,6 +5,7 @@ import { Loader } from "@/components/loader"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useProModal } from "@/hooks/use-pro-modal"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { Music } from "lucide-react"
@@ -14,6 +15,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { formSchema } from "./constants"
 const MusicPage = () => {
+  const proModal = useProModal()
   const router = useRouter()
   const [music, setMusic] = useState<string>()
     const form = useForm<z.infer<typeof formSchema>>({
@@ -32,6 +34,9 @@ const MusicPage = () => {
            form.reset()
         } catch (error:any) {
           // ---todo open pro modal
+          if(error?.response?.status === 403){
+            proModal.onOpen()
+          }
           
         }finally{
           // form.reset()
