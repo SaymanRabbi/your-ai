@@ -5,7 +5,7 @@ import prismaDB from "./prismadb";
 export const incrementApiLimit = async () => {
     const {userId} = auth()
     if(!userId) return
-
+     
     const userApiLimit = await prismaDB.userApiLimit.findUnique({
         where :{
             userId
@@ -42,4 +42,17 @@ export const checkApiLimit = async () => {
     })
     if(!userApiLimit || userApiLimit.count<MAX_FREE_COUNT) return true
     else return false
+}
+
+export const getApiLimitCount = async () => {
+    const {userId} = auth()
+    if(!userId) return 0
+
+    const userApiLimit = await prismaDB.userApiLimit.findUnique({
+        where :{
+            userId
+        }
+    })
+    if(!userApiLimit) return 0
+    else return userApiLimit.count
 }

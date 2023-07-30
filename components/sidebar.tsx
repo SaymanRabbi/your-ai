@@ -1,4 +1,5 @@
 "use client";
+import FreeCounter from "@/components/freecounter";
 import { cn } from "@/lib/utils";
 import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
 import { Montserrat } from "next/font/google";
@@ -52,7 +53,12 @@ const routes=[
         href:'/settings',
     }
 ]
-const SideBar = () => {
+interface SideBarProps{
+    apiLimitCount:number
+}
+const SideBar = ({
+    apiLimitCount = 0
+}:SideBarProps) => {
     const pathName = usePathname()
     return (
         <div className=" space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
@@ -89,6 +95,7 @@ const SideBar = () => {
                 {/* ------mapover the route---- */}
                </div>
            </div>
+           <FreeCounter apiLimitCount={apiLimitCount}/>
         </div>
     )
 }
