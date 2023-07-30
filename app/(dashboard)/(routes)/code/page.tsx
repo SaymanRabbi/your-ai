@@ -43,7 +43,7 @@ const CodePage = () => {
            form.reset()
         } catch (error:any) {
           // ---todo open pro modal
-          console.log(error)
+          
         }finally{
           // form.reset()
           router.refresh()  

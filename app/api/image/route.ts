@@ -1,3 +1,4 @@
+import { checkApiLimit, incrementApiLimit } from '@/lib/api-limit';
 import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 import { Configuration, OpenAIApi } from 'openai';
@@ -31,14 +32,21 @@ export async function POST(
     if(!resolution ) {
         return new NextResponse("resulation is required", { status: 400 })
     }
+    // ----------------- API Limit -----------------
+    const freeTrail = await checkApiLimit();
+    if(!freeTrail) {
+        return new NextResponse("Free Trail Limit Exceeded", { status: 403 })
+    }
+    // ----------------- API Limit -----------------
     const response = await openai.createImage({
         prompt,
         n:parseInt(amount,10),
         size:resolution ,
     });
+    await incrementApiLimit();
     return NextResponse.json(response.data.data)
  } catch (error) {
-     console.log("image error",error)
+     
      return  new NextResponse("Internal Server Error", { status: 500 })
  }
 }

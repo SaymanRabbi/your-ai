@@ -1,3 +1,4 @@
+import { checkApiLimit, incrementApiLimit } from '@/lib/api-limit';
 import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 import Replicate from 'replicate';
@@ -19,6 +20,12 @@ export async function POST(
     if(!prompt) {
         return new NextResponse("prompt not found", { status: 400 })
     }
+    // ----------------- API Limit -----------------
+    const freeTrail = await checkApiLimit();
+    if(!freeTrail) {
+        return new NextResponse("Free Trail Limit Exceeded", { status: 403 })
+    }
+    // ----------------- API Limit -----------------
     const response = await replicate.run(
       "anotherjesse/zeroscope-v2-xl:9f747673945c62801b13b84701c783929c0ee784e4748ec062204894dda1a351",
       {
@@ -27,9 +34,10 @@ export async function POST(
         }
       }
     );
+    await incrementApiLimit();
     return NextResponse.json(response)
  } catch (error) {
-     console.log("music error",error)
+    
      return  new NextResponse("Internal Server Error", { status: 500 })
  }
 }
